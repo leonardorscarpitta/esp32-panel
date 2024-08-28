@@ -6,6 +6,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from datetime import datetime
+from dotenv import load_dotenv
 
 def clearCmd():
     os.system("clear")
@@ -13,10 +14,12 @@ def clearCmd():
 
 # Clear terminal screen
 clearCmd()
+# Load dot env to use ambient variables
+load_dotenv()
 
 # Global variables for lamp ID and IP address
-lampId = "007"
-IP = "IP HERE"
+lampId = os.getenv("LAMPID")
+IP = os.getenv("IP")
 
 def testConnection(IP):
     """
