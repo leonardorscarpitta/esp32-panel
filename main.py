@@ -9,7 +9,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 def clearCmd():
-    os.system("clear")
+    os.system("clear") # Clear CMD for Linux users
 
 
 # Clear terminal screen
@@ -20,6 +20,8 @@ load_dotenv()
 # Global variables for lamp ID and IP address
 lampId = os.getenv("LAMPID")
 IP = os.getenv("IP")
+IPParts = IP.split('.')
+maskedIP = f"{IPParts[0]}.{IPParts[1]}.***.***"
 
 def testConnection(IP):
     """
@@ -320,14 +322,14 @@ def main():
         avgLuminosity = round(sum(luminosity_data) / len(luminosity_data), 3)
         print(f"💡 Average luminosity - {avgLuminosity}")
         print(f"🆔 Lamp ID - Lamp:{lampId}")
-        print(f"🌐 Connected IPv4 - {IP}")
+        print(f"🌐 Connected IPv4 - {maskedIP}")
         print("==========*==========")
         print("""
-    ___                         _____         _     
-    |_ _|_ __   _____   ____ _  |_   _|__  ___| |__  
-    | || '_ \ / _ \ \ / / _` |   | |/ _ \/ __| '_ \ 
-    | || | | | (_) \ V / (_| |   | |  __/ (__| | | |
-    |___|_| |_|\___/ \_/ \__,_|   |_|\___|\___|_| |_|
+ ___                         _____         _     
+|_ _|_ __   _____   ____ _  |_   _|__  ___| |__  
+ | || '_ \ / _ \ \ / / _` |   | |/ _ \/ __| '_ \ 
+ | || | | | (_) \ V / (_| |   | |  __/ (__| | | |
+|___|_| |_|\___/ \_/ \__,_|   |_|\___|\___|_| |_|
     """)
         print("==========*==========")
         print("[0] - Test your connection")
