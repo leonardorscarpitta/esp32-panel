@@ -9,10 +9,10 @@ Esse projeto foi desenvolvido em Python com o objetivo de controlar os dispositi
 ```
 pip install matplotlib datetime python-dotenv
 ```
-2.1 `matplotlib` para a geração de gráficos;
-2.2 `datetime` para o registro de horário e data em que as informações foram coletadas;
-2.3 `python-dotenv` para a configuração de variáveis de ambiente;
-3. Crie um arquivo `.env` dentro da pasta do projeto para que você possa configurar o IP usado e o ID da lâmpada.
+2.1 `matplotlib` para a geração de gráficos;<br>
+2.2 `datetime` para o registro de horário e data em que as informações foram coletadas;<br>
+2.3 `python-dotenv` para a configuração de variáveis de ambiente;<br>
+3. Crie um arquivo `.env` dentro da pasta do projeto para que você possa configurar o IP usado e o ID da lâmpada.<br>
 3.1 Utilize os seguintes parâmetros:
 ```
 LAMPID=""
