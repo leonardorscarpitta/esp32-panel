@@ -7,8 +7,11 @@ Esse projeto foi desenvolvido em Python com o objetivo de controlar os dispositi
 1. Instale o [Python](https://www.python.org/) em sua máquina
 2. Realize o download das bibliotecas necessárias ibliotecas do Python necessárias: 
 ```
-pip install requests matplotlib datetime python-dotenv
+pip install matplotlib datetime python-dotenv
 ```
+2.1 `matplotlib` para a geração de gráficos;
+2.2 `datetime` para o registro de horário e data em que as informações foram coletadas;
+2.3 `python-dotenv` para a configuração de variáveis de ambiente;
 3. Crie um arquivo `.env` dentro da pasta do projeto para que você possa configurar o IP usado e o ID da lâmpada.
 3.1 Utilize os seguintes parâmetros:
 ```
