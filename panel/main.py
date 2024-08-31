@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 def clearCmd():
     print("\n" * 120)
 
-
 # Clear terminal screen
 clearCmd()
 # Load dot env to use ambient variables
@@ -20,8 +19,10 @@ load_dotenv()
 # Global variables for lamp ID and IP address
 lampId = os.getenv("LAMPID")
 IP = os.getenv("IP")
-IPParts = IP.split('.')
-maskedIP = f"{IPParts[0]}.{IPParts[1]}.***.***"
+
+def getStatusCode(response):
+    return response.status_code
+
 
 def testConnection(IP):
     """
@@ -102,8 +103,13 @@ def checkLedStatus(IP, lampId) -> str:
     response = requests.get(url, headers=headers, data=payload)
     response_json = response.json()
     led_value = response_json.get("value")
+    statusCode = getStatusCode(response)
 
-    return led_value
+    if statusCode == 404:
+        input("Error 404 Collecting data! Press any key to get back to menu.")
+    else:
+        print(statusCode)
+        return led_value
 
 
 def provisionSmartLamp(IP, lampId) -> str:
@@ -319,7 +325,7 @@ def main():
         clearCmd()
         ledStatus = checkLedStatus(IP, lampId)
         print(f"🆔 Lamp ID - Lamp:{lampId}")
-        print(f"🌐 Connected IPv4 - {maskedIP}")
+        print(f"🌐 Connected IPv4 - {IP}")
         print("==========*==========")
         print("""
  ___                         _____         _     
