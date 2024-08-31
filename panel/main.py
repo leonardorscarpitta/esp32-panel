@@ -9,7 +9,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 def clearCmd():
-    os.system("clear") # Clear CMD for Linux users
+    print("\n" * 120)
 
 
 # Clear terminal screen
@@ -314,13 +314,10 @@ def collect_luminosity_data(IP, lampId, collectN = 8):
 def main():
     # Run luminosity data at least once
     print("Starting the program and collecting luminosity data...")
-    status = collect_luminosity_data(IP, lampId)
     # Main program loop
     while True:
         clearCmd()
         ledStatus = checkLedStatus(IP, lampId)
-        avgLuminosity = round(sum(luminosity_data) / len(luminosity_data), 3)
-        print(f"💡 Average luminosity - {avgLuminosity}")
         print(f"🆔 Lamp ID - Lamp:{lampId}")
         print(f"🌐 Connected IPv4 - {maskedIP}")
         print("==========*==========")
