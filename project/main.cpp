@@ -4,6 +4,10 @@
 #include <PubSubClient.h>
 #include <Arduino.h>
 #include "config.h"
+#include "DHT.h"
+
+DHT dht(4, DHT22);
+// LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 
 // Configurações - variáveis editáveis
 const char* default_SSID = SSID; // Nome da rede Wi-Fi
@@ -33,6 +37,37 @@ WiFiClient espClient;
 PubSubClient MQTT(espClient);
 char EstadoSaida = '0';
 
+/*
+byte customChars[8][8] = {
+  { B00000, B01000, B01111, B01011, B01011, B00011, B00011, B00011 }, // cima1
+  { B00000, B01011, B11011, B01011, B01101, B00101, B00001, B00001 }, // cima2
+  { B00000, B00000, B10000, B11000, B11101, B10101, B10101, B10111 }, // cima3
+  { B00000, B00110, B01110, B11110, B11100, B01100, B01100, B01100 }, // cima4
+  { B00011, B00011, B00011, B01011, B01011, B01111, B01000, B00000 }, // baixo1
+  { B00001, B00001, B00101, B01101, B01001, B11011, B00110, B00000 }, // baixo2
+  { B10111, B10010, B10010, B10000, B10000, B11000, B00000, B00000 }, // baixo3
+  { B01100, B01100, B01100, B01100, B01100, B11110, B00011, B00000 }  // baixo4
+};
+
+void showLogo() {
+  lcd.begin(16, 2);
+  for (int i = 0; i < 8; i++) {
+    lcd.createChar(i, customChars[i]);
+    lcd.setCursor(6 + (i % 4), i / 4); // Definir cursor baseado na posição de cima ou baixo
+    lcd.write(byte(i));
+  }
+
+  delay(5000);
+  lcd.clear();
+  lcd.setCursor(3, 0);
+  lcd.print("Innovation");
+  lcd.setCursor(4, 1);
+  lcd.print("Masters");
+  delay(2000);
+  lcd.clear();
+}
+*/
+
 void initSerial() {
     Serial.begin(115200);
 }
@@ -51,18 +86,26 @@ void initMQTT() {
     MQTT.setCallback(mqtt_callback);
 }
 
+void initDHT() {
+    dht.begin();
+}
+
 void setup() {
+    // showLogo();
     InitOutput();
     initSerial();
     initWiFi();
     initMQTT();
+    initDHT();
     delay(5000);
     MQTT.publish(TOPICO_PUBLISH_1, "s|on");
 }
 
 void loop() {
+    Serial.println("-----=()=-----");
     VerificaConexoesWiFIEMQTT();
     EnviaEstadoOutputMQTT();
+    handleUmidityTemperature();
     handleLuminosity();
     MQTT.loop();
 }
@@ -155,6 +198,28 @@ void reconnectMQTT() {
             delay(2000);
         }
     }
+}
+
+void handleUmidityTemperature() {
+    float temperature = dht.readTemperature();
+    float humidity = dht.readHumidity();
+
+    // Check if any reads failed and exit early (to try again).
+    if (isnan(temperature) || isnan(humidity)) {
+      Serial.println(F("Failed to read from DHT sensor!"));
+      return;
+    }
+
+    Serial.print(F("- Humidade: "));
+    Serial.print(humidity);
+    Serial.print(F("%"));
+    Serial.println();
+    Serial.print(F("- Temperatura: "));
+    Serial.print(temperature);
+    Serial.println(F("°C "));
+
+    // Wait a few seconds between measurements.
+    delay(2000);
 }
 
 void handleLuminosity() {
