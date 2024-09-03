@@ -13,7 +13,7 @@ def clearCmd():
 
 # Clear terminal screen
 clearCmd()
-# Load dot env to use ambient variables
+# Load dot env to use environment variables
 load_dotenv()
 
 # Global variables for lamp ID and IP address
@@ -106,7 +106,8 @@ def checkLedStatus(IP, lampId) -> str:
     statusCode = getStatusCode(response)
 
     if statusCode == 404:
-        input("Error 404 Collecting data! Press any key to get back to menu.")
+        input("Error 404 Collecting data! Press any key to close the program.")
+        quit()
     else:
         print(statusCode)
         return led_value
@@ -217,6 +218,16 @@ def registerLampCommands(IP, lampId) -> str:
 
 
 def searchLamp(IP, lampId):
+    """
+    Check if the registered lamp exists
+
+    Args:
+        IP (str): The IP address of the IoT device.
+        lampId (str): The ID of the lamp.
+
+    Returns:
+        None
+    """
     url = f"http://{IP}:4041/iot/devices/lamp{lampId}"
 
     payload = ""
@@ -318,6 +329,15 @@ def collect_luminosity_data(IP, lampId, collectN = 8):
     print("Gráfico salvo como 'luminosity_graph.png'.")
 
 def main():
+    """
+    Function to run the program properly
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # Run luminosity data at least once
     print("Starting the program and collecting luminosity data...")
     # Main program loop
